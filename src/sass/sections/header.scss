@@ -1,0 +1,48 @@
+.header {
+  background-image: url(../images/desktop/header-bg.png);
+}
+
+.header .container {
+  padding-top: 40px;
+  justify-content: center;
+  padding-bottom: 192px;
+}
+
+.header__title {
+  color: #dc56c5;
+  font-weight: 900;
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+.header__center-div {
+  margin-left: auto;
+  margin-right: auto;
+  width: 575px;
+}
+
+.header__search {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  width: 270px;
+  height: 40px;
+  padding-left: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #939393;
+  margin-right: 30px;
+}
+
+.header__location {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  width: 270px;
+  height: 40px;
+  padding-left: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  color: #939393;
+}
