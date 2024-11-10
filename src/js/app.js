@@ -1,6 +1,6 @@
 import { getTickets } from "./api/getTickets";
 import { createTicket } from "./layout/createTickets";
-const ticketsList = document.querySelector(".tickets__list");
+const ticketsList = document.querySelector(".tickets-list");
 
 getTickets()
   .then((response) => response.json())
