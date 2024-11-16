@@ -1,13 +1,17 @@
-body{
-    font-family: "Montserrat";
-    background-color: #000000;
+body {
+  font-family: "Montserrat";
+  background-color: #000000;
 }
 
-.container{
-    width: 1050px;
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
-    align-items: center;
-    display: block;
+.container {
+  width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
