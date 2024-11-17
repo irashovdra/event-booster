@@ -1,6 +1,7 @@
 import { getTickets } from "./api/getTickets";
 import { createTicket } from "./layout/createTickets";
 import { openModal } from "./layout/modal";
+import { renderPagination } from "./pagination";
 
 const ticketsList = document.querySelector(".tickets-list");
 const searchInput = document.querySelector(
@@ -62,30 +63,32 @@ getTickets()
     console.log(error);
   });
 
+const filterEvents = (
+  query,
+  selectedCountry,
+  allEvents,
+  renderTickets,
+  currentPage
+) => {
+  const filteredByQuery = allEvents.filter((event) => {
+    const eventName = event.name || "";
+    return eventName.toLowerCase().includes(query.toLowerCase());
+  });
+
+  renderTickets(filteredByQuery, currentPage);
+};
+
 searchInput.addEventListener("input", (event) => {
-  const query = event.target.value;
+  const query = event.target.value.toLowerCase();
   const selectedCountry = countrySelect.value;
-  filterEvents(
-    query,
-    selectedCountry,
-    allEvents,
-    filteredEvents,
-    renderTickets,
-    currentPage
-  );
+
+  filterEvents(query, selectedCountry, allEvents, renderTickets, currentPage);
 });
 
 countrySelect.addEventListener("change", (event) => {
   const query = searchInput.value;
   const selectedCountry = event.target.value;
-  filterEvents(
-    query,
-    selectedCountry,
-    allEvents,
-    filteredEvents,
-    renderTickets,
-    currentPage
-  );
+  filterEvents(query, selectedCountry, allEvents, renderTickets, currentPage);
 });
 
 ticketsList.addEventListener("click", (event) => {

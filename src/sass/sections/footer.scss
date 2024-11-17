@@ -10,6 +10,31 @@
   font-weight: 400;
 }
 
+.footer__pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination__button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination__button:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination__button--active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
 .footer__text {
   color: #939393;
   text-align: center;
