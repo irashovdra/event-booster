@@ -1,28 +1,21 @@
 import { getTickets } from "./api/getTickets";
 import { createTicket } from "./layout/createTickets";
 import { openModal } from "./layout/modal";
-import { renderPagination } from "./pagination";
 
 const ticketsList = document.querySelector(".tickets-list");
 const searchInput = document.querySelector(
   ".header-list__filling[type='text']"
 );
-const countrySelect = document.querySelector(
-  ".header-list__filling[aria-label='Choose location']"
+const stateSelect = document.querySelector(
+  ".header-list__filling[aria-label='Choose state']"
 );
 
 let allEvents = [];
 let filteredEvents = [];
-let currentPage = 1;
-const itemsPerPage = 20;
 
-const renderTickets = (events, page = 1) => {
-  const start = (page - 1) * itemsPerPage;
-  const end = page * itemsPerPage;
-  const paginatedEvents = events.slice(start, end);
-
-  ticketsList.innerHTML = paginatedEvents.length
-    ? paginatedEvents
+const renderTickets = (events) => {
+  ticketsList.innerHTML = events.length
+    ? events
         .map((event) => {
           const eventImage = event.images
             ? event.images[0].url
@@ -38,9 +31,7 @@ const renderTickets = (events, page = 1) => {
           });
         })
         .join("")
-    : "<p>No events found.</p>";
-
-  renderPagination(events, currentPage, filteredEvents);
+    : "<p>No events found.";
 };
 
 getTickets()
@@ -50,8 +41,7 @@ getTickets()
       allEvents = data._embedded.events;
       if (allEvents.length > 0) {
         filteredEvents = allEvents;
-        renderTickets(filteredEvents, currentPage);
-        populateCountryOptions(allEvents, countrySelect);
+        renderTickets(filteredEvents);
       } else {
         ticketsList.innerHTML = "<p>No events found.</p>";
       }
@@ -63,33 +53,61 @@ getTickets()
     console.log(error);
   });
 
-const filterEvents = (
-  query,
-  selectedCountry,
-  allEvents,
-  renderTickets,
-  currentPage
-) => {
+const filterEvents = (query, allEvents, renderTickets) => {
   const filteredByQuery = allEvents.filter((event) => {
     const eventName = event.name || "";
     return eventName.toLowerCase().includes(query.toLowerCase());
   });
 
-  renderTickets(filteredByQuery, currentPage);
+  renderTickets(filteredByQuery);
 };
 
 searchInput.addEventListener("input", (event) => {
   const query = event.target.value.toLowerCase();
-  const selectedCountry = countrySelect.value;
-
-  filterEvents(query, selectedCountry, allEvents, renderTickets, currentPage);
+  filterEvents(query, allEvents, renderTickets);
 });
 
-countrySelect.addEventListener("change", (event) => {
-  const query = searchInput.value;
-  const selectedCountry = event.target.value;
-  filterEvents(query, selectedCountry, allEvents, renderTickets, currentPage);
-});
+// STATE RENDER
+
+const getStates = (events) => {
+  const states = [];
+  const eventsArr = events._embedded.events;
+  eventsArr.forEach((event) => {
+    const state = event._embedded.venues[0].state.name;
+    states.push(state);
+  });
+  return states;
+};
+
+const getStatesOptions = (states) => {
+  stateSelect.innerHTML = "<option value=''>Select a State</option>";
+  console.log(states);
+  states.forEach((state) => {
+    const option = document.createElement("option");
+    option.value = state;
+    option.textContent = state;
+    stateSelect.appendChild(option);
+  });
+};
+
+const displayStateEvents = () => {
+  getTickets()
+    .then((response) => response.json())
+    .then((data) => {
+      const states = getStates(data);
+      getStatesOptions(states);
+    });
+};
+
+displayStateEvents();
+
+const getStateFilteredEvents = (event) => {
+  const chosenState = event.value.target;
+};
+
+selectedState.addEventListener("change", getStateFilteredEvents);
+
+// END
 
 ticketsList.addEventListener("click", (event) => {
   const clickedImage = event.target.closest(".ticket__photo");
