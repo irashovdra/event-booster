@@ -31,7 +31,7 @@ const renderTickets = (events) => {
           });
         })
         .join("")
-    : "<p>No events found.";
+    : "<p>No events found.</p>";
 };
 
 getTickets()
@@ -70,18 +70,16 @@ searchInput.addEventListener("input", (event) => {
 // STATE RENDER
 
 const getStates = (events) => {
-  const states = [];
-  const eventsArr = events._embedded.events;
-  eventsArr.forEach((event) => {
-    const state = event._embedded.venues[0].state.name;
-    states.push(state);
+  const states = new Set();
+  events.forEach((event) => {
+    const state = event._embedded?.venues?.[0]?.state?.name;
+    if (state) states.add(state);
   });
-  return states;
+  return Array.from(states);
 };
 
 const getStatesOptions = (states) => {
   stateSelect.innerHTML = "<option value=''>Select a State</option>";
-  console.log(states);
   states.forEach((state) => {
     const option = document.createElement("option");
     option.value = state;
@@ -94,20 +92,31 @@ const displayStateEvents = () => {
   getTickets()
     .then((response) => response.json())
     .then((data) => {
-      const states = getStates(data);
-      getStatesOptions(states);
+      if (data._embedded && data._embedded.events) {
+        const states = getStates(data._embedded.events);
+        getStatesOptions(states);
+      }
     });
 };
 
 displayStateEvents();
 
-const getStateFilteredEvents = (event) => {
-  const chosenState = event.value.target;
+const filterEventsByState = (state, allEvents) => {
+  return allEvents.filter((event) => {
+    const eventState = event._embedded?.venues?.[0]?.state?.name;
+    return eventState === state;
+  });
 };
 
-selectedState.addEventListener("change", getStateFilteredEvents);
-
-// END
+stateSelect.addEventListener("change", (event) => {
+  const selectedState = event.target.value;
+  if (selectedState) {
+    filteredEvents = filterEventsByState(selectedState, allEvents);
+  } else {
+    filteredEvents = allEvents;
+  }
+  renderTickets(filteredEvents);
+});
 
 ticketsList.addEventListener("click", (event) => {
   const clickedImage = event.target.closest(".ticket__photo");
