@@ -1,5 +1,13 @@
 .header {
-  background-image: url(../images/desktop/header-bg.png);
+  background-image: url(../images/mobile/header-bg.png);
+
+  @media (min-width: 624px) {
+    background-image: url(../images/tablet/header-bg.png);
+  }
+
+  @media (min-width: 1080px) {
+    background-image: url(../images/desktop/header-bg.png);
+  }
 }
 
 .header__logo {

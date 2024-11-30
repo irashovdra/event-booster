@@ -3,7 +3,6 @@
   gap: 14px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
 
   @media (min-width: 624px) {
     gap: 27px;
@@ -23,6 +22,27 @@
   @media (min-width: 624px) {
     width: 180px;
     height: 227px;
+  }
+}
+
+.ticket__photo-wrapper {
+  position: relative;
+}
+
+.ticket__photo-border {
+  width: 108px;
+  height: 101px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  border-radius: 50px 0px;
+  border: 1px solid rgba(220, 86, 197, 0.3);
+
+  @media (min-width: 624px) {
+    width: 153px;
+    height: 143px;
+    top: -14px;
+    right: -14px;
   }
 }
 
